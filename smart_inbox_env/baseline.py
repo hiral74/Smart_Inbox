@@ -1,3 +1,17 @@
+def evaluate_performance(scores):
+    avg = sum(scores) / len(scores)
+
+    if avg >= 0.8:
+        rating = "Excellent"
+    elif avg >= 0.6:
+        rating = "Good"
+    elif avg >= 0.4:
+        rating = "Average"
+    else:
+        rating = "Poor"
+
+    return avg, rating
+
 from env.environment import SmartInboxEnv
 from env.models import EmailAction
 
@@ -43,6 +57,12 @@ def main():
         _, reward, _, _ = env.step(action)
 
         print(f"{task.upper()} SCORE: {reward.score}")
+
+    avg, rating = evaluate_performance(scores)
+
+    print("\nFINAL EVALUATION")
+    print("Average Score:", round(avg, 2))
+    print("Performance:", rating)
 
 
 if __name__ == "__main__":
