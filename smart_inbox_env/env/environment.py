@@ -166,17 +166,7 @@ class SmartInboxEnv:
                     "action": "ignore"
                 }
             },
-            {
-                "email_id": "E013",
-                "sender": "security@bank.com",
-                "subject": "Suspicious login attempt",
-                "body": "We detected a login from a new device. Please confirm if this was you.",
-                "timestamp": "2026-04-04T22:00:00",
-                "priority_hint": "high",
-                "ground_truth": {
-                    "classification": "important",
-                    "action": "reply"
-                }
+            
             }
         ]
 
