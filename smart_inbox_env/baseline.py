@@ -1,3 +1,10 @@
+from env.environment import SmartInboxEnv
+from env.models import EmailAction
+
+
+# -----------------------------
+# Performance Evaluation
+# -----------------------------
 def evaluate_performance(scores):
     avg = sum(scores) / len(scores)
 
@@ -12,34 +19,47 @@ def evaluate_performance(scores):
 
     return avg, rating
 
-from env.environment import SmartInboxEnv
-from env.models import EmailAction
 
-
+# -----------------------------
+# Baseline Agent (Improved)
+# -----------------------------
 def get_agent_action(observation):
     text = (observation.subject + " " + observation.body).lower()
 
-    if any(word in text for word in ["free", "win", "lottery", "offer", "click", "verify account", "suspend", "prize"]):
+    # Spam detection
+    if any(word in text for word in [
+        "free", "win", "lottery", "offer", "click",
+        "verify account", "suspend", "prize"
+    ]):
         return EmailAction(
             classification="spam",
             action="ignore",
             response=""
         )
 
-    if any(word in text for word in ["outage", "crash", "server down", "cpu", "urgent", "immediate"]):
+    # Critical issues → escalate
+    if any(word in text for word in [
+        "outage", "crash", "server down", "cpu",
+        "urgent", "immediate"
+    ]):
         return EmailAction(
             classification="important",
             action="escalate",
             response=""
         )
 
-    if any(word in text for word in ["refund", "not received", "interview", "deadline", "login", "security"]):
+    # Important requests → reply
+    if any(word in text for word in [
+        "refund", "not received", "interview",
+        "deadline", "login", "security"
+    ]):
         return EmailAction(
             classification="important",
             action="reply",
             response="We have received your request and will respond shortly."
         )
 
+    # Default case
     return EmailAction(
         classification="normal",
         action="ignore",
@@ -47,8 +67,13 @@ def get_agent_action(observation):
     )
 
 
+# -----------------------------
+# Main Execution
+# -----------------------------
 def main():
     env = SmartInboxEnv()
+
+    scores = []
 
     for task in ["easy", "medium", "hard"]:
         obs = env.reset(task=task)
@@ -58,12 +83,15 @@ def main():
 
         print(f"{task.upper()} SCORE: {reward.score}")
 
+        scores.append(reward.score)
+
     avg, rating = evaluate_performance(scores)
 
-    print("\nFINAL EVALUATION")
+    print("\nOverall Effienceny of the Model:")
     print("Average Score:", round(avg, 2))
     print("Performance:", rating)
 
 
 if __name__ == "__main__":
     main()
+
