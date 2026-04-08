@@ -10,5 +10,5 @@ RUN pip install --no-cache-dir \
     openai
 
 # Run baseline script by default
-CMD ["python", "baseline.py"]
+CMD ["python", "inference.py"]
 
