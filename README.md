@@ -60,7 +60,7 @@ The agent must return:
 
 The environment includes three levels of difficulty:
 
-### asy
+### Easy
 
 * Objective: Classify the email correctly
 * Evaluation: Binary (0 or 1)
@@ -180,7 +180,7 @@ smart_inbox_env/
 ├── README.md            # Documentation
 ```
 
-## ✅ Key Features
+## Key Features
 
 * Real-world task simulation (email triage)
 * OpenEnv-compliant architecture
