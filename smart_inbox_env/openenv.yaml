@@ -1,0 +1,38 @@
+name: smart-inbox-env
+description: >
+  A real-world email triage environment where an AI agent must classify emails,
+  decide actions (reply, ignore, escalate), and generate responses.
+
+version: "1.0"
+
+entry_point: env.environment:SmartInboxEnv
+
+tasks:
+  - name: easy
+    description: Classify the email correctly
+  - name: medium
+    description: Classify the email and choose the correct action
+  - name: hard
+    description: Full email handling including classification, action, and response generation
+
+observation_space:
+  type: EmailObservation
+  description: Structured email data including sender, subject, body, timestamp, and priority hint
+
+action_space:
+  type: EmailAction
+  description: Classification, action decision, and optional response generation
+
+reward:
+  type: EmailReward
+  range: [0.0, 1.0]
+  description: Reward based on classification accuracy, action correctness, and response quality
+
+tags:
+  - openenv
+  - email
+  - automation
+  - ai-training
+
+author: Your Name
+license: MIT
