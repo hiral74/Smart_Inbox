@@ -3,40 +3,34 @@ from env.models import EmailAction
 
 
 def get_agent_action(observation):
-    """
-    Simple rule-based agent (no API needed)
-    """
-
     text = (observation.subject + " " + observation.body).lower()
 
-    # Rule-based logic
-    if "free" in text or "win" in text:
+    if any(word in text for word in ["free", "win", "lottery", "offer", "click", "verify account", "suspend", "prize"]):
         return EmailAction(
             classification="spam",
             action="ignore",
             response=""
         )
 
-    elif "refund" in text or "not received" in text:
+    if any(word in text for word in ["outage", "crash", "server down", "cpu", "urgent", "immediate"]):
         return EmailAction(
             classification="important",
-            action="reply",
-            response="We are processing your request."
-        )
-
-    elif "meeting" in text:
-        return EmailAction(
-            classification="important",
-            action="reply",
-            response="Noted. Thanks for the update."
-        )
-
-    else:
-        return EmailAction(
-            classification="normal",
-            action="ignore",
+            action="escalate",
             response=""
         )
+
+    if any(word in text for word in ["refund", "not received", "interview", "deadline", "login", "security"]):
+        return EmailAction(
+            classification="important",
+            action="reply",
+            response="We have received your request and will respond shortly."
+        )
+
+    return EmailAction(
+        classification="normal",
+        action="ignore",
+        response=""
+    )
 
 
 def main():
